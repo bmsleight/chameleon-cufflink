@@ -1,0 +1,65 @@
+PCBNEW-LibModule-V1  Sun 22 Mar 2015 20:03:32 GMT
+# encoding utf-8
+Units mm
+$INDEX
+TCS34725
+$EndINDEX
+$MODULE TCS34725
+Po 0 0 0 15 550F1FE4 00000000 ~~
+Li TCS34725
+Sc 0
+AR 
+Op 0 0 0
+T0 0 -1.6 1 1 0 0.15 N I 21 N "TCS34725"
+T1 0 1.8 1 1 0 0.15 N I 21 N ""
+DS -0.2 -1.1 -1.5 -1.1 0.15 21
+DS -1.5 -1.1 -1.5 1.1 0.15 21
+DS -1.5 1.1 -0.2 1.1 0.15 21
+DS 1 1.1 1.5 1.1 0.15 21
+DS 1.5 1.1 1.5 -1 0.15 21
+DS 1.5 -1 1.5 -1.1 0.15 21
+DS 1.5 -1.1 0.2 -1.1 0.15 21
+$PAD
+Sh "1" R 1 0.4 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 0.75 0.65
+$EndPAD
+$PAD
+Sh "2" R 1 0.4 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 0.75 0
+$EndPAD
+$PAD
+Sh "3" R 1 0.4 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 0.75 -0.65
+$EndPAD
+$PAD
+Sh "4" R 1 0.4 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po -0.75 -0.65
+$EndPAD
+$PAD
+Sh "5" R 1 0.4 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po -0.75 0
+$EndPAD
+$PAD
+Sh "6" R 1 0.4 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po -0.75 0.65
+$EndPAD
+$EndMODULE TCS34725
+$EndLIBRARY

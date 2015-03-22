@@ -1,0 +1,24 @@
+Cmp-Mod V01 Created by CvPcb (2013-jul-07)-stable date = Sun 22 Mar 2015 20:04:50 GMT
+
+BeginCmp
+TimeStamp = /550EC0EF;
+Reference = IC1;
+ValeurCmp = TCS3472;
+IdModule  = TCS34725;
+EndCmp
+
+BeginCmp
+TimeStamp = /550EBDBF;
+Reference = LED1;
+ValeurCmp = LED_ARGB;
+IdModule  = HSMF-C114;
+EndCmp
+
+BeginCmp
+TimeStamp = /550EED33;
+Reference = P1;
+ValeurCmp = CONN_10;
+IdModule  = SIL-10;
+EndCmp
+
+EndListe

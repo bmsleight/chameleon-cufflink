@@ -1,0 +1,14 @@
+eeschema (2013-jul-07)-stable  >> Creation date: Sun 22 Mar 2015 17:38:29 GMT
+#Cmp ( order = Reference )
+| IC1        TCS3472     
+| LED1       LED_ARGB    
+| P1         CONN_10     
+#End Cmp
+
+#Cmp ( order = Value )
+| TCS3472      IC1       
+| LED_ARGB     LED1      
+| CONN_10      P1        
+#End Cmp
+
+#End List
