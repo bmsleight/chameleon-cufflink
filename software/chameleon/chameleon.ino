@@ -1,30 +1,29 @@
 /*
 
  Not possible to use SoftPWM Library
-
+ Need to have 3 PWM
  
  */
+
+//#include <TinyDebugKnockBang.h>
 
  
 #define RED_PIN 1
 #define GREEN_PIN 3
 #define BLUE_PIN 4
-// Need for Speed so this will be
-//   DDRD = B00011010; // 
-
-
 
 // the setup routine runs once when you press reset:
-void setup() {                
+void setup() {
+//  Debug.begin( 250000 );  
   // initialize the digital pin as an output.
   pinMode(RED_PIN, OUTPUT);     
   pinMode(GREEN_PIN, OUTPUT);     
   pinMode(BLUE_PIN, OUTPUT);     
-  //   DDRD = B00011010; //
 }
 
 // the loop routine runs over and over again forever:
 void loop() {
+  // Debug.println("Test knock-bang");
   digitalWrite(RED_PIN, LOW);    
   delay(500);                 
   digitalWrite(RED_PIN, HIGH);    
@@ -32,14 +31,11 @@ void loop() {
   digitalWrite(RED_PIN, LOW);    
   delay(2000);               
 
-  rgb(254, 32, 2, 500, 4000, 500);
+  rgb(254, 32, 2, 500, 4000, 5000);
   
   delay(1000);
 
-
-
 }
-
 
 void all_rgb(boolean r_state, boolean g_state, boolean b_state) {
   if (r_state) {
@@ -95,9 +91,9 @@ void rgb(byte r_target, byte g_target, byte b_target, unsigned long fade_up_time
   pwmTiming[8].b_value = b_target;
   for (byte l = 9; l < 17; l++) {
     pwmTiming[l].milliseconds = fade_off_time/7;
-    pwmTiming[l].r_value = (r_target * (17-l))/8;
-    pwmTiming[l].g_value = (g_target * (17-l))/8;
-    pwmTiming[l].b_value = (b_target * (17-l))/8;
+    pwmTiming[l].r_value = (r_target >> (l-8));
+    pwmTiming[l].g_value = (g_target >> (l-8));
+    pwmTiming[l].b_value = (b_target >> (l-8));
   }
   for (byte l = 0; l < 17; l++) {
     r_value = pwmTiming[l].r_value;
@@ -127,13 +123,5 @@ void rgb(byte r_target, byte g_target, byte b_target, unsigned long fade_up_time
     }
   }
   all_rgb(LOW);
-  for (int n = 0; n < pwmTiming[0].g_value; n++) {
-    digitalWrite(GREEN_PIN, LOW);    
-  delay(500);                 
-  digitalWrite(GREEN_PIN, HIGH);    
-  delay(500);               
-  digitalWrite(GREEN_PIN, LOW);    
-  delay(500);
-  }
 }
 
