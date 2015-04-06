@@ -32,7 +32,7 @@ void loop() {
   digitalWrite(RED_PIN, LOW);    
   delay(2000);               
 
-  rgb(254, 32, 2, 4000, 4000, 4000);
+  rgb(254, 32, 2, 500, 4000, 500);
   
   delay(1000);
 
@@ -40,17 +40,30 @@ void loop() {
 
 }
 
-void all_rgb(boolean state) {
-  byte mask = 0;
-  mask +=  1 << (RED_PIN);
-  mask +=  1 << (GREEN_PIN);
-  mask +=  1 << (BLUE_PIN);
-  if (state) {
-    PORTB |= mask;   // turns on 1,3,4 but leaves pins other pins alone
+
+void all_rgb(boolean r_state, boolean g_state, boolean b_state) {
+  if (r_state) {
+    PORTB |= (1 << RED_PIN);
   }
   else {
-    PORTB &= ~mask;
+    PORTB &= ~(1 << RED_PIN);
   }
+  if (g_state) {
+    PORTB |= (1 << GREEN_PIN);
+  }
+  else {
+    PORTB &= ~(1 << GREEN_PIN);
+  }
+  if (b_state) {
+    PORTB |= (1 << BLUE_PIN);
+   }
+   else {
+    PORTB &= ~(1 << BLUE_PIN);
+   }
+}
+
+void all_rgb(boolean state) {
+  all_rgb(state, state, state);
 }
 
 
@@ -72,9 +85,9 @@ void rgb(byte r_target, byte g_target, byte b_target, unsigned long fade_up_time
   pwmTiming_type pwmTiming[17];
   for (byte l = 0; l < 7; l++) {
     pwmTiming[l].milliseconds = fade_up_time/7;
-    pwmTiming[l].r_value = (r_target * (l+1) )/(8) ;
-    pwmTiming[l].g_value = (g_target * (l+1) )/(8);
-    pwmTiming[l].b_value = (b_target * (l+1) )/(8);
+    pwmTiming[l].r_value = (r_target >> (7-l));
+    pwmTiming[l].g_value = (g_target >> (7-l));
+    pwmTiming[l].b_value = (b_target >> (7-l));
   }
   pwmTiming[8].milliseconds = on_time;
   pwmTiming[8].r_value = r_target;
@@ -92,7 +105,13 @@ void rgb(byte r_target, byte g_target, byte b_target, unsigned long fade_up_time
     b_value = pwmTiming[l].b_value;
     totalOnTime = millis() + pwmTiming[l].milliseconds;
     while (totalOnTime > millis())  {
-      all_rgb(HIGH);
+      // When I set the LED, the For loop take a little long to set-up
+      // So I need to set the PWM at the correct setting
+      // At the very start
+      // If the value is 0, then I want the LED off
+      // Other wise every non-zero value will set the LED on
+      // #goodEnoughForNow
+      all_rgb(r_value, g_value, b_value);
       // Not very scientific, but sping rounf quick...
       for (byte p = 0; p < 255; p++) {  
         if (p > r_value) {
@@ -108,5 +127,13 @@ void rgb(byte r_target, byte g_target, byte b_target, unsigned long fade_up_time
     }
   }
   all_rgb(LOW);
+  for (int n = 0; n < pwmTiming[0].g_value; n++) {
+    digitalWrite(GREEN_PIN, LOW);    
+  delay(500);                 
+  digitalWrite(GREEN_PIN, HIGH);    
+  delay(500);               
+  digitalWrite(GREEN_PIN, LOW);    
+  delay(500);
+  }
 }
 
