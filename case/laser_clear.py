@@ -49,7 +49,8 @@ def stacks_layers(drawing):
             drawing.add(dxf.circle(battery_space/2, (centreX, centreY), layer='CUTSINNER'))
         # Slot for bar (the other end of the cufflink
         if (x == 5):
-            drawing.add(dxf.rectangle((centreX-(bar_length/2), centreY-(p_thickness/2)) , bar_length, p_thickness, layer='CUTSINNER'))  
+            drawing.add(dxf.rectangle((centreX-(bar_length/2), centreY-(p_thickness/2)) , bar_length, p_thickness, layer='CUTSINNER')) 
+            engrave_text(drawing,  centreX, centreY)
         # Hole for button
         if (x == 2):
             drawing.add(dxf.line(
@@ -127,6 +128,10 @@ def button(drawing, x, y):
                            (x+(p_thickness*4),y+(p_thickness*0)), 
                            (x,y) ]) 
     drawing.add(polyline)
+
+
+def engrave_text(drawing, x, y):
+    drawing.add(dxf.text('Cuffelink.com', halign=dxfwrite.const.CENTER,  valign=dxfwrite.const.MIDDLE, alignpoint=(x, y+2.5), height=2, layer='ENGRAVE'))
 
 
 if __name__ == '__main__': 
