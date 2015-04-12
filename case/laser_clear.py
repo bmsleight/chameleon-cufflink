@@ -16,6 +16,7 @@ screw_radius = 1
 bar_length = 14
 bar_height = bar_length + p_thickness + p_thickness
 bar_thickness = 3
+tape_width = 5.5
 
 def add_layers(drawing):
     drawing.add_layer('OUTLINE', color=1)
@@ -52,24 +53,25 @@ def stacks_layers(drawing):
         # Hole for button
         if (x == 2):
             drawing.add(dxf.line(
-                                  (centreX-(p_thickness*1.1)/2, centreY-battery_space/2), 
+                                  (centreX-(p_thickness*1.1)/2, centreY-battery_space/3), 
                                   (centreX-(p_thickness*1.1)/2, centreY-total_outline_radius ), 
                                 layer='CUTSINNEREARLY') 
                        )  
             drawing.add(dxf.line(
-                                  (centreX+(p_thickness*1.1)/2, centreY-battery_space/2), 
+                                  (centreX+(p_thickness*1.1)/2, centreY-battery_space/3), 
                                   (centreX+(p_thickness*1.1)/2, centreY-total_outline_radius ), 
                                 layer='CUTSINNEREARLY') 
                        )  
 
         if ( x == 1):
+        # Hole for button - but only indent to hold button in
             drawing.add(dxf.line(
-                                  (centreX-(p_thickness*1.1)/2, centreY-battery_space/2), 
+                                  (centreX-(p_thickness*1.1)/2, centreY-battery_space/3), 
                                   (centreX-(p_thickness*1.1)/2, centreY-2-battery_space/2 ), 
                                 layer='CUTSINNEREARLY') 
                        )  
             drawing.add(dxf.line(
-                                  (centreX+(p_thickness*1.1)/2, centreY-battery_space/2), 
+                                  (centreX+(p_thickness*1.1)/2, centreY-battery_space/3), 
                                   (centreX+(p_thickness*1.1)/2, centreY-2-battery_space/2 ), 
                                 layer='CUTSINNEREARLY') 
                        )  
@@ -79,6 +81,25 @@ def stacks_layers(drawing):
                                   (centreX+(p_thickness*1.1)/2, centreY-2-battery_space/2 ), 
                                 layer='CUTSINNEREARLY') 
                        )  
+
+        if ((x != 0) and (x !=5)):
+        # Tape hole for battery connection
+            drawing.add(dxf.line(
+                                  (centreX-(tape_width)/2, centreY+battery_space/3), # Should do trig, but what the hell 
+                                  (centreX-(tape_width)/2, centreY+1.5+battery_space/2 ), 
+                                layer='CUTSINNEREARLY') 
+                       )  
+            drawing.add(dxf.line(
+                                  (centreX+(tape_width)/2, centreY+battery_space/3), # Should do trig, but what the hell 
+                                  (centreX+(tape_width)/2, centreY+1.5+battery_space/2 ), 
+                                layer='CUTSINNEREARLY') 
+                       )  
+            drawing.add(dxf.line(
+                                  (centreX-(tape_width)/2, centreY+1.5+battery_space/2 ), 
+                                  (centreX+(tape_width)/2, centreY+1.5+battery_space/2 ), 
+                                layer='CUTSINNEREARLY') 
+                       )  
+
 
 def bar(drawing, x, y):
     polyline= dxf.polyline(layer='CUTSOUTER')
