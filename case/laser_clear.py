@@ -44,14 +44,19 @@ def stacks_layers(drawing, startx, starty):
         drawing.add(dxf.circle(screw_radius, (centreX+offset, centreY-offset), layer='CUTSINNER', color=4))
         drawing.add(dxf.circle(screw_radius, (centreX-offset, centreY+offset), layer='CUTSINNER', color=4))
         drawing.add(dxf.circle(screw_radius, (centreX+offset, centreY+offset), layer='CUTSINNER', color=4))
+
+
         # not top layer or bottom layer
         if ((x != 0) and (x !=5) and (x !=6)):
             drawing.add(dxf.circle(battery_space/2, (centreX, centreY), layer='CUTSINNER', color=4))
+            # Number each layer
+            drawing.add(dxf.text(str(x), halign=dxfwrite.const.CENTER,  valign=dxfwrite.const.MIDDLE, alignpoint=(centreX+2.5, centreY-7.5), height=1.5, layer='ENGRAVE', color=2))
         # Slot for bar (the other end of the cufflink
         if (x == 5):
             # Kurf is ~0.1mm as measured by thickness of two A4 sheets.
             drawing.add(dxf.rectangle((centreX-(bar_length/2), centreY-(p_thickness/2)) , bar_length, p_thickness-0.1, layer='CUTSINNER', color=4)) 
             # engrave_text(drawing,  centreX, centreY)
+            serial_number(drawing,  centreX, centreY, "00001")
         # Hole for button
         if (x == 2):
             drawing.add(dxf.line(
@@ -156,6 +161,15 @@ def button(drawing, x, y):
 def engrave_text(drawing, x, y):
     drawing.add(dxf.text('Cuffelink.com', halign=dxfwrite.const.CENTER,  valign=dxfwrite.const.MIDDLE, alignpoint=(x, y+2.5), height=2, layer='ENGRAVE', color=2))
 
+def get_git_revision_short_hash():
+    import subprocess
+    return subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).strip() 
+
+def serial_number(drawing, x, y, text = ""):
+    serial =  get_git_revision_short_hash()
+    drawing.add(dxf.text(serial, halign=dxfwrite.const.CENTER,  valign=dxfwrite.const.MIDDLE, alignpoint=(x, y+2.5), height=2, layer='ENGRAVE', color=2))
+    if (text !=""):
+        drawing.add(dxf.text(text, halign=dxfwrite.const.CENTER,  valign=dxfwrite.const.MIDDLE, alignpoint=(x, y-2.5), height=2, layer='ENGRAVE', color=2))
 
 def single_cufflink(drawing, startx, starty):
    # outline(drawing)
@@ -166,8 +180,9 @@ def single_cufflink(drawing, startx, starty):
 
 
 
-if __name__ == '__main__': 
-    name="laser_clear.dxf"
+if __name__ == '__main__':
+    # git rev-parse --short HEAD 
+    name="/tmp/laser_clear.dxf"
     drawing = dxf.drawing(name)
     single_cufflink(drawing, 0, 0)  
     single_cufflink(drawing, 0, 22.5)  
