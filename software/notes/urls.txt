@@ -4,3 +4,14 @@ http://forums.4fips.com/viewtopic.php?f=3
 http://www.ernstc.dk/arduino/tinycom.html - Low level debug
 
 https://github.com/rambo/TinyWire - Arduino TinyWire Slave Library I2C
+
+
+Website See 
+http://www.circuidipity.com/github-pages.html
+http://ntanjerome.org/blog/how-to-setup-github-user-page-with-pelican/
+http://martinbrochhaus.com/pelican2.html
+https://github.com/fle/pelican-sober
+https://github.com/fle/fle.github.io/blob/content/settings.py
+
+
+http://docs-europe.electrocomponents.com/webdocs/06f7/0900766b806f7653.pdf
