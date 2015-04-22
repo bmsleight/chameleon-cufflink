@@ -1,0 +1,52 @@
+Cmp-Mod V01 Created by CvPcb (2013-jul-07)-stable date = Wed 22 Apr 2015 21:45:19 BST
+
+BeginCmp
+TimeStamp = /5537F654;
+Reference = D1R1;
+ValeurCmp = LED;
+IdModule  = LED-0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5537F68E;
+Reference = D2A1;
+ValeurCmp = LED;
+IdModule  = LED-0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5537F694;
+Reference = D3G1;
+ValeurCmp = LED;
+IdModule  = LED-0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5537FA46;
+Reference = GND1;
+ValeurCmp = CONNECTOR;
+IdModule  = 1PIN_SMD;
+EndCmp
+
+BeginCmp
+TimeStamp = /5537F49D;
+Reference = IC1;
+ValeurCmp = ATTINY45-S;
+IdModule  = analog-devices-TSSOP8;
+EndCmp
+
+BeginCmp
+TimeStamp = /5537F99D;
+Reference = SW1;
+ValeurCmp = SW_PUSH;
+IdModule  = SW_en-b3u-3615;
+EndCmp
+
+BeginCmp
+TimeStamp = /5537FA6B;
+Reference = V+1;
+ValeurCmp = CONNECTOR;
+IdModule  = 1pin;
+EndCmp
+
+EndListe

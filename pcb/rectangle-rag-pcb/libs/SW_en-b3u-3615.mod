@@ -1,0 +1,37 @@
+PCBNEW-LibModule-V1  Wed 22 Apr 2015 21:25:52 BST
+# encoding utf-8
+Units mm
+$INDEX
+SW_en-b3u-3615
+$EndINDEX
+$MODULE SW_en-b3u-3615
+Po 0 0 0 15 55380372 00000000 ~~
+Li SW_en-b3u-3615
+Sc 0
+AR 
+Op 0 0 0
+T0 0 1.8 1 1 0 0.15 N I 21 N "SW_en-b3u-3615"
+T1 0 -1.9 1 1 0 0.15 N V 21 N "VAL**"
+$PAD
+Sh "1" R 0.8 1.7 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po -1.7 0
+$EndPAD
+$PAD
+Sh "2" R 0.8 1.7 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 1.7 0
+$EndPAD
+$PAD
+Sh "" C 0.8 0.8 0 0 0
+Dr 0.75 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 0 0
+$EndPAD
+$EndMODULE SW_en-b3u-3615
+$EndLIBRARY

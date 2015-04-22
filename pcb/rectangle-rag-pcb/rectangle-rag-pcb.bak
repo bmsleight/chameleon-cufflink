@@ -1,0 +1,158 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:special
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+EELAYER 27 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date "22 apr 2015"
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L ATTINY45-S IC1
+U 1 1 5537F49D
+P 4800 1900
+F 0 "IC1" H 3650 2300 40  0000 C CNN
+F 1 "ATTINY45-S" H 5800 1500 40  0000 C CNN
+F 2 "SO8-200" H 5750 1900 35  0000 C CIN
+F 3 "" H 4800 1900 60  0000 C CNN
+	1    4800 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L LED D1R
+U 1 1 5537F654
+P 2550 2600
+F 0 "D1R" H 2550 2700 50  0000 C CNN
+F 1 "LED" H 2550 2500 50  0000 C CNN
+F 2 "~" H 2550 2600 60  0000 C CNN
+F 3 "~" H 2550 2600 60  0000 C CNN
+	1    2550 2600
+	0    1    1    0   
+$EndComp
+$Comp
+L LED D2A
+U 1 1 5537F68E
+P 2900 2600
+F 0 "D2A" H 2900 2700 50  0000 C CNN
+F 1 "LED" H 2900 2500 50  0000 C CNN
+F 2 "~" H 2900 2600 60  0000 C CNN
+F 3 "~" H 2900 2600 60  0000 C CNN
+	1    2900 2600
+	0    1    1    0   
+$EndComp
+$Comp
+L LED D3G
+U 1 1 5537F694
+P 3250 2600
+F 0 "D3G" H 3250 2700 50  0000 C CNN
+F 1 "LED" H 3250 2500 50  0000 C CNN
+F 2 "~" H 3250 2600 60  0000 C CNN
+F 3 "~" H 3250 2600 60  0000 C CNN
+	1    3250 2600
+	0    1    1    0   
+$EndComp
+$Comp
+L SW_PUSH SW1
+U 1 1 5537F99D
+P 2200 2650
+F 0 "SW1" H 2350 2760 50  0000 C CNN
+F 1 "SW_PUSH" H 2200 2570 50  0000 C CNN
+F 2 "~" H 2200 2650 60  0000 C CNN
+F 3 "~" H 2200 2650 60  0000 C CNN
+	1    2200 2650
+	0    -1   -1   0   
+$EndComp
+$Comp
+L CONNECTOR GND
+U 1 1 5537FA46
+P 6350 2150
+F 0 "GND" H 6700 2250 70  0000 C CNN
+F 1 "CONNECTOR" H 6700 2050 70  0000 C CNN
+F 2 "~" H 6350 2150 60  0000 C CNN
+F 3 "~" H 6350 2150 60  0000 C CNN
+	1    6350 2150
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONNECTOR V+
+U 1 1 5537FA6B
+P 6350 1650
+F 0 "V+" H 6700 1750 70  0000 C CNN
+F 1 "CONNECTOR" H 6700 1550 70  0000 C CNN
+F 2 "~" H 6350 1650 60  0000 C CNN
+F 3 "~" H 6350 1650 60  0000 C CNN
+	1    6350 1650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6350 1650 6150 1650
+Wire Wire Line
+	6350 2150 6150 2150
+Wire Wire Line
+	3250 3050 3250 2800
+Wire Wire Line
+	2200 3050 6350 3050
+Wire Wire Line
+	2200 3050 2200 2950
+Wire Wire Line
+	2550 2800 2550 3050
+Connection ~ 2550 3050
+Wire Wire Line
+	2900 2800 2900 3050
+Connection ~ 2900 3050
+Wire Wire Line
+	6350 3050 6350 2150
+Connection ~ 3250 3050
+Wire Wire Line
+	2550 2400 2550 1750
+Wire Wire Line
+	2550 1750 3450 1750
+Wire Wire Line
+	3450 1650 2200 1650
+Wire Wire Line
+	2200 1650 2200 2350
+Wire Wire Line
+	3450 1950 2900 1950
+Wire Wire Line
+	2900 1950 2900 2400
+Wire Wire Line
+	3450 2050 3250 2050
+Wire Wire Line
+	3250 2050 3250 2400
+$EndSCHEMATC
