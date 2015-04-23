@@ -1,0 +1,20 @@
+eeschema (2013-jul-07)-stable  >> Creation date: Thu 23 Apr 2015 21:14:46 BST
+#Cmp ( order = Reference )
+| IC-ATTINY45 ATTINY45-S  
+| IC-TCS3472 TCS3472     
+| LED1       LED_ARGB    
+| PGND1      CONNECTOR   
+| PV+1       CONNECTOR   
+| SW1        SW_PUSH     
+#End Cmp
+
+#Cmp ( order = Value )
+| ATTINY45-S   IC-ATTINY45
+| TCS3472      IC-TCS3472
+| LED_ARGB     LED1      
+| CONNECTOR    PGND1     
+| CONNECTOR    PV+1      
+| SW_PUSH      SW1       
+#End Cmp
+
+#End List

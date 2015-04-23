@@ -1,0 +1,45 @@
+Cmp-Mod V01 Created by CvPcb (2013-jul-07)-stable date = Thu 23 Apr 2015 21:21:33 BST
+
+BeginCmp
+TimeStamp = /55394A25;
+Reference = IC-ATTINY45;
+ValeurCmp = ATTINY45-S;
+IdModule  = analog-devices-TSSOP8;
+EndCmp
+
+BeginCmp
+TimeStamp = /55394A42;
+Reference = IC-TCS3472;
+ValeurCmp = TCS3472;
+IdModule  = TCS34725;
+EndCmp
+
+BeginCmp
+TimeStamp = /55394A87;
+Reference = LED1;
+ValeurCmp = LED_ARGB;
+IdModule  = HSMF-C114;
+EndCmp
+
+BeginCmp
+TimeStamp = /55394D61;
+Reference = PGND1;
+ValeurCmp = CONNECTOR;
+IdModule  = 1PIN_SMD;
+EndCmp
+
+BeginCmp
+TimeStamp = /55394D54;
+Reference = PV+1;
+ValeurCmp = CONNECTOR;
+IdModule  = 1PIN_SMD;
+EndCmp
+
+BeginCmp
+TimeStamp = /55394B50;
+Reference = SW1;
+ValeurCmp = SW_PUSH;
+IdModule  = SW_en-b3u-3615;
+EndCmp
+
+EndListe

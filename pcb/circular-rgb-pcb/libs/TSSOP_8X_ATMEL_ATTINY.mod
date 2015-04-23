@@ -1,0 +1,1 @@
+../../rectangle-rag-pcb/libs/TSSOP_8X_ATMEL_ATTINY.mod
