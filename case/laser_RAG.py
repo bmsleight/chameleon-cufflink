@@ -80,8 +80,12 @@ def button(drawing, x, y):
                            (x,y) ]) 
     drawing.add(polyline)
 
-def engrave_text(drawing, x, y):
-    drawing.add(dxf.text('Cuffelink.com', halign=dxfwrite.const.CENTER,  valign=dxfwrite.const.MIDDLE, alignpoint=(x, y), height=1.8, rotation=90, layer='ENGRAVE', color=2))
+def engrave_text(drawing, x, y, text='Cuffelink.com'):
+    drawing.add(dxf.text(text, halign=dxfwrite.const.CENTER,  valign=dxfwrite.const.MIDDLE, alignpoint=(x, y), height=1.8, rotation=90, layer='ENGRAVECUT', color=3))
+
+def get_git_revision_short_hash():
+    import subprocess
+    return subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).strip().upper() 
 
 def stacks_layers(drawing, startx, starty):
     for x in range(0, 5):
@@ -114,7 +118,7 @@ def stacks_layers(drawing, startx, starty):
             drawing.add(dxf.circle(1, (masterX+width/2, masterY+p_thickness+13.5), layer='CUTSINNER', color=5))
             # Backing board!
             drawing.add(dxf.rectangle((masterX+p_thickness, masterY+p_thickness) , width-p_thickness*2, height-p_thickness*2, layer='ENGRAVE', color=2)) 
-            drawing.add(dxf.rectangle((masterX+p_thickness*2, masterY+p_thickness*2) , width-p_thickness*4, height-p_thickness*4, layer='ENGRAVE', color=2)) 
+            drawing.add(dxf.rectangle((masterX+p_thickness*1.5, masterY+p_thickness*1.5) , width-p_thickness*3, height-p_thickness*3, layer='ENGRAVE', color=2)) 
         # Button hole
         if (x == 2):
             drawing.add(dxf.line((masterX, masterY+boarder+2.5-1), (masterX+boarder, masterY+boarder+2.5-1), layer='CUTSINNER', color=5))
@@ -150,6 +154,9 @@ def stacks_layers(drawing, startx, starty):
             drawing.add(dxf.rectangle((masterX-(b_len_b/2)+width/2, masterY-(p_thickness/2)+height/2) , b_len_b, p_thickness-0.1, layer='CUTSINNER', color=5)) 
             # logo
             engrave_text(drawing, masterX+p_thickness/2+1, masterY+height/2+1.5)
+            # git version number
+            engrave_text(drawing, masterX+width-p_thickness/2-1, masterY+height/2, text=get_git_revision_short_hash())
+
     bar(drawing, startx+12+(15*5), starty+12)
     button(drawing, startx+12+(15*5), starty+12+bar_height+2)
     button(drawing, startx+12+(15*5)+7.5, starty+12+bar_height+2)
