@@ -11,7 +11,7 @@ from dxfwrite import DXFEngine as dxf
 battery_space = 12.7
 p_thickness = 2
 # space|screw|space|battery+wiggle|space|screw|space
-total_outline_radius = (1+2+1+ battery_space+1+2+1)/2
+total_outline_radius = (1+2+ battery_space+1+2)/2
 screw_radius = 1
 bar_length = 16
 bar_height = bar_length + p_thickness + p_thickness
@@ -30,7 +30,7 @@ def outline(drawing):
     drawing.add(dxf.rectangle((0, 0) , 210, 297,  layer='OUTLINE', color=1))
 
 def stacks_layers(drawing, startx, starty):
-    for x in range(0, 7):
+    for x in range(0, 5):
         centreX = 12+(22.5*x)+startx
         centreY = 12+starty
         # Main outline
@@ -38,7 +38,7 @@ def stacks_layers(drawing, startx, starty):
         # Screw holes
         # sin 45 = SQRT(2)/2 
         sin = math.sqrt(2)/2
-        offset=(total_outline_radius-2-screw_radius)*sin
+        offset=(total_outline_radius-1-screw_radius)*sin
 
         drawing.add(dxf.circle(screw_radius, (centreX-offset, centreY-offset), layer='CUTSINNER', color=4))
         drawing.add(dxf.circle(screw_radius, (centreX+offset, centreY-offset), layer='CUTSINNER', color=4))
@@ -47,12 +47,12 @@ def stacks_layers(drawing, startx, starty):
 
 
         # not top layer or bottom layer
-        if ((x != 0) and (x !=5) and (x !=6)):
+        if ((x != 0) and (x !=4)):
             drawing.add(dxf.circle(battery_space/2, (centreX, centreY), layer='CUTSINNER', color=4))
             # Number each layer
             drawing.add(dxf.text(str(x), halign=dxfwrite.const.CENTER,  valign=dxfwrite.const.MIDDLE, alignpoint=(centreX+2.5, centreY-7.5), height=1.5, layer='ENGRAVE', color=2))
         # Slot for bar (the other end of the cufflink
-        if (x == 5):
+        if (x == 4):
             # Kurf is ~0.1mm as measured by thickness of two A4 sheets.
             drawing.add(dxf.rectangle((centreX-(bar_length/2), centreY-(p_thickness/2)) , bar_length, p_thickness-0.1, layer='CUTSINNER', color=4)) 
             # engrave_text(drawing,  centreX, centreY)
@@ -89,7 +89,7 @@ def stacks_layers(drawing, startx, starty):
                                 layer='CUTSINNEREARLY', color=3) 
                        )  
 
-        if ((x != 0) and (x !=5) and (x !=6)):
+        if ((x != 0) and (x !=4)):
         # Tape hole for battery connection
             drawing.add(dxf.line(
                                   (centreX-(tape_width)/2, centreY+battery_space/3), # Should do trig, but what the hell 
@@ -174,9 +174,9 @@ def serial_number(drawing, x, y, text = ""):
 def single_cufflink(drawing, startx, starty):
    # outline(drawing)
     stacks_layers(drawing, 0+startx, 0+starty)
-    bar(drawing, 165+startx, 5+starty)
-    button(drawing, 170+startx, 2.5+starty)
-    button(drawing, 170+startx, 17.5+starty)
+    bar(drawing, 115+startx, 5+starty)
+    button(drawing, 120+startx, 2.5+starty)
+    button(drawing, 120+startx, 17.5+starty)
 
 
 
