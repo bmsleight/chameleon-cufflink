@@ -1,0 +1,117 @@
+PCBNEW-LibModule-V1  Mon 04 May 2015 13:52:41 BST
+# encoding utf-8
+Units mm
+$INDEX
+LTC3212
+$EndINDEX
+$MODULE LTC3212
+Po 0 0 0 15 55476B36 00000000 ~~
+Li LTC3212
+Sc 0
+AR 
+Op 0 0 0
+T0 0 -2.2 1 1 0 0.15 N I 21 N "LTC3212"
+T1 0 2.5 1 1 0 0.15 N I 21 N "VAL**"
+DS -2.2 1 -2.2 1.7 0.15 21
+DS -1.8 1.7 -2.1 1.7 0.15 21
+DS -2.1 1 -2.1 1.6 0.15 21
+DS -1.8 1 -1.8 1.7 0.15 21
+DS -1.9 1 -1.9 1.6 0.15 21
+DS -2 1 -2 1.7 0.15 21
+DS -1.7 -1.7 1.7 -1.7 0.15 21
+DS 1.7 -1.7 1.7 1.7 0.15 21
+DS 1.7 1.7 -1.7 1.7 0.15 21
+DS -1.7 1.7 -1.7 -1.7 0.15 21
+$PAD
+Sh "1" R 0.25 0.7 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po -1.195 0.925
+$EndPAD
+$PAD
+Sh "2" R 0.25 0.7 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po -0.745 0.925
+$EndPAD
+$PAD
+Sh "3" R 0.25 0.7 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po -0.295 0.925
+$EndPAD
+$PAD
+Sh "4" R 0.25 0.7 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 0.295 0.925
+$EndPAD
+$PAD
+Sh "5" R 0.25 0.7 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 0.745 0.925
+$EndPAD
+$PAD
+Sh "6" R 0.25 0.7 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 1.195 0.925
+$EndPAD
+$PAD
+Sh "7" R 0.25 0.7 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 1.195 -0.925
+$EndPAD
+$PAD
+Sh "8" R 0.25 0.7 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 0.745 -0.925
+$EndPAD
+$PAD
+Sh "9" R 0.25 0.7 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 0.295 -0.925
+$EndPAD
+$PAD
+Sh "10" R 0.25 0.7 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po -0.295 -0.925
+$EndPAD
+$PAD
+Sh "11" R 0.25 0.7 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po -0.745 -0.925
+$EndPAD
+$PAD
+Sh "12" R 0.25 0.7 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po -1.195 -0.925
+$EndPAD
+$PAD
+Sh "13" R 2.39 0.64 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 0 0
+$EndPAD
+$EndMODULE LTC3212
+$EndLIBRARY

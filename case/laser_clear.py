@@ -50,13 +50,13 @@ def stacks_layers(drawing, startx, starty):
         if ((x != 0) and (x !=4)):
             drawing.add(dxf.circle(battery_space/2, (centreX, centreY), layer='CUTSINNER', color=4))
             # Number each layer
-            drawing.add(dxf.text(str(x), halign=dxfwrite.const.CENTER,  valign=dxfwrite.const.MIDDLE, alignpoint=(centreX+2.5, centreY-7.5), height=1.5, layer='ENGRAVE', color=2))
+            # drawing.add(dxf.text(str(x), halign=dxfwrite.const.CENTER,  valign=dxfwrite.const.MIDDLE, alignpoint=(centreX+2.5, centreY-7.5), height=1.5, layer='ENGRAVE', color=2))
         # Slot for bar (the other end of the cufflink
         if (x == 4):
             # Kurf is ~0.1mm as measured by thickness of two A4 sheets.
             drawing.add(dxf.rectangle((centreX-(bar_length/2), centreY-(p_thickness/2)) , bar_length, p_thickness-0.1, layer='CUTSINNER', color=4)) 
             # engrave_text(drawing,  centreX, centreY)
-            serial_number(drawing,  centreX, centreY, "00001")
+            # serial_number(drawing,  centreX, centreY, "00001")
         # Hole for button
         if (x == 2):
             drawing.add(dxf.line(
@@ -74,18 +74,18 @@ def stacks_layers(drawing, startx, starty):
         # Hole for button - but only indent to hold button in
             drawing.add(dxf.line(
                                   (centreX-(p_thickness*1.1)/2, centreY-battery_space/3), 
-                                  (centreX-(p_thickness*1.1)/2, centreY-2-battery_space/2 ), 
+                                  (centreX-(p_thickness*1.1)/2, centreY-1-battery_space/2 ), 
                                 layer='CUTSINNEREARLY', color=3) 
                        )  
             drawing.add(dxf.line(
                                   (centreX+(p_thickness*1.1)/2, centreY-battery_space/3), 
-                                  (centreX+(p_thickness*1.1)/2, centreY-2-battery_space/2 ), 
+                                  (centreX+(p_thickness*1.1)/2, centreY-1-battery_space/2 ), 
                                 layer='CUTSINNEREARLY', color=3) 
                        )  
 
             drawing.add(dxf.line(
-                                  (centreX-(p_thickness*1.1)/2, centreY-2-battery_space/2 ), 
-                                  (centreX+(p_thickness*1.1)/2, centreY-2-battery_space/2 ), 
+                                  (centreX-(p_thickness*1.1)/2, centreY-1-battery_space/2 ), 
+                                  (centreX+(p_thickness*1.1)/2, centreY-1-battery_space/2 ), 
                                 layer='CUTSINNEREARLY', color=3) 
                        )  
 
@@ -150,10 +150,10 @@ def button(drawing, x, y):
     polyline= dxf.polyline(layer='CUTSOUTER', color=5)
     polyline.add_vertices( [(x,y), 
                            (x+(p_thickness*0),y+(p_thickness*2)), 
-                           (x+(p_thickness*1),y+(p_thickness*2)), 
-                           (x+(p_thickness*1),y+(p_thickness*1)), 
-                           (x+(p_thickness*4),y+(p_thickness*1)), 
-                           (x+(p_thickness*4),y+(p_thickness*0)), 
+                           (x+(p_thickness*0.75),y+(p_thickness*2)), 
+                           (x+(p_thickness*0.75),y+(p_thickness*1)), 
+                           (x+(p_thickness*3),y+(p_thickness*1)), 
+                           (x+(p_thickness*3),y+(p_thickness*0)), 
                            (x,y) ]) 
     drawing.add(polyline)
 

@@ -1,0 +1,17 @@
+Cmp-Mod V01 Created by CvPcb (2013-jul-07)-stable date = Mon 04 May 2015 13:55:05 BST
+
+BeginCmp
+TimeStamp = /554764AF;
+Reference = P1;
+ValeurCmp = CONN_12;
+IdModule  = SIL-12;
+EndCmp
+
+BeginCmp
+TimeStamp = /55476405;
+Reference = U1;
+ValeurCmp = LTC3212;
+IdModule  = LTC3212;
+EndCmp
+
+EndListe
