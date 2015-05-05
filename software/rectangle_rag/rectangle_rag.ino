@@ -1,5 +1,7 @@
-/*
+/* 
 */
+
+#include <avr/pgmspace.h>
 
 #define RED_PIN 1
 #define AMBER_PIN 3
@@ -15,14 +17,21 @@
 #define GREEN_FLASH 32
 #define END_SEQUENCE 64
 
-#define SEQUENCE_TYPES 3
-#define MAX_STEPS 10
-static uint8_t sequence[SEQUENCE_TYPES][MAX_STEPS][2]=
+#define FLASH_INTERVAL_MILLIS 375
+
+#define SEQUENCE_TYPES 4
+#define MAX_STEPS 30
+// see http://www.arduino.cc/en/Reference/PROGMEM
+// https://github.com/lilspikey/arduino_sketches/blob/master/attiny/xmas/xmas.ino
+// bitrate = pgm_read_word_near ( &(bitrate_table[temp][row_num]) );
+// PROGMEM const uint16_t bitrate_table[15][6] = 
+
+const uint16_t sequence[SEQUENCE_TYPES][MAX_STEPS][2] PROGMEM =
 {
   { // Normal Traffic RAG
     {RED, 3},
     {RED + AMBER, 2},
-    {GREEN, 4},
+    {GREEN, 7},
     {AMBER, 2},
     {RED, 3},
     {END_SEQUENCE, 1},
@@ -43,27 +52,39 @@ static uint8_t sequence[SEQUENCE_TYPES][MAX_STEPS][2]=
     {AMBER, 3},
     {RED, 3},
     {END_SEQUENCE, 1},
-  }
+  },
+  { // Silly RAG 
+    {RED, 1},
+    {RED + AMBER, 1},
+    {AMBER, 1},
+    {AMBER + GREEN, 1},
+    {GREEN, 1},
+    {AMBER + GREEN, 1},
+    {AMBER, 2},
+    {RED + AMBER, 1},
+    {RED, 2},
+    {RED + AMBER, 2},
+    {GREEN, 9},
+    {AMBER, 2},
+    {RED, 3},
+    {END_SEQUENCE, 1},
+  },
 
 };
 
-
- 
-// the setup routine runs once when you press reset:
 void setup() {                
   // initialize the digital pin as an output.
   pinsToOutput();
   pinMode(BUTTON_PIN, INPUT_PULLUP);
 }
 
-// the loop routine runs over and over again forever:
+
 void loop() {
-  digitalWrite(RED_PIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(1000);               // wait for a second
-  digitalWrite(RED_PIN, LOW);    // turn the LED off by making the voltage LOW
-  delay(1000);               // wait for a second
+//  doSequence(4);
+  doSequence(3);
+  doSequence(2);
+  doSequence(1);
   doSequence(0);
-  delay(1000);               // wait for a second
 
 }
 
@@ -71,21 +92,34 @@ void loop() {
 void doSequence(unsigned char s)  {
   // http://playground.arduino.cc/Code/TimingRollover
   uint8_t current_step = 0;
-  unsigned long start_milliseconds = 0;
-  bool flash = HIGH; // Start with FLASH ON or HIGH
-  while(sequence[s][current_step][0] != END_SEQUENCE )  {
-      start_milliseconds = millis();
-      digitalWrite(RED_PIN, sequence[s][current_step][0] & RED);
-      digitalWrite(AMBER_PIN, sequence[s][current_step][0] & AMBER);
-      digitalWrite(GREEN_PIN, sequence[s][current_step][0] & GREEN);
-      delay(1000 * sequence[s][current_step][1]);
-      current_step++;
+  uint8_t leds = pgm_read_word_near( &(sequence[s][current_step][0]));
+  unsigned long start_milliseconds, length_of_step, last_flash_milliseconds;
+  uint8_t flash = 255; // Start with FLASH ON or HIGH
+  //pgm_read_word_near ( &(bitrate_table[temp][row_num]) )
+  
+  while(leds != END_SEQUENCE )  {
+    start_milliseconds = millis();
+    last_flash_milliseconds = start_milliseconds;
+    length_of_step = 1000 * pgm_read_word_near( &(sequence[s][current_step][1]));
+    while((millis() - start_milliseconds) < (length_of_step) )  {
+      digitalWrite(RED_PIN,   (leds & RED)   | (leds & RED_FLASH   & flash));
+      digitalWrite(AMBER_PIN, (leds & AMBER) | (leds & AMBER_FLASH & flash));
+      digitalWrite(GREEN_PIN, (leds & GREEN) | (leds & GREEN_FLASH & flash));
+      if ((millis() - last_flash_milliseconds) > FLASH_INTERVAL_MILLIS)  {
+        last_flash_milliseconds = millis();
+        flash = ~flash;
+      }
+    }
+    current_step++;
+    leds = pgm_read_word_near( &(sequence[s][current_step][0]));
   }
-
+  digitalWrite(RED_PIN,   LOW);
+  digitalWrite(AMBER_PIN, LOW);
+  digitalWrite(GREEN_PIN, LOW);
 }
 
 void pinsToOutput()  {
-  pinMode(RED_PIN, OUTPUT);
+  pinMode(RED_PIN,   OUTPUT);
   pinMode(AMBER_PIN, OUTPUT);
   pinMode(GREEN_PIN, OUTPUT);
 }
