@@ -36,10 +36,10 @@ const uint16_t sequence[SEQUENCE_TYPES][MAX_STEPS][2] PROGMEM =
     {RED, 3},
     {END_SEQUENCE, 1},
   },
-  { // Vehicle RAG in Pelican
+  { // Vehicle RAG in Pelican only 
+    //http://www.legislation.gov.uk/uksi/1997/2400/schedule/2/made?view=plain
     {RED, 3},
     {AMBER_FLASH, 3},
-    {GREEN_FLASH, 3},
     {GREEN, 4},
     {AMBER, 3},
     {RED, 3},
