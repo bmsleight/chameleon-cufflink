@@ -7,6 +7,7 @@
 #define AMBER_PIN 3
 #define GREEN_PIN 4
 #define BUTTON_PIN 0
+#define MAX_LOOPS 7
 
 // Hello PVG - a perversion of your look-up.
 #define RED 1
@@ -80,13 +81,56 @@ void setup() {
 
 
 void loop() {
+
+  uint8_t presses = 0;
+  if(pressed())  {
+    presses = getPresses(1, 1, 4, MAX_LOOPS);
+    doSequence(presses-1);
+  }
+
+
+  
 //  doSequence(4);
-  doSequence(3);
-  doSequence(2);
-  doSequence(1);
-  doSequence(0);
+//  doSequence(3);
+//  doSequence(2);
+//  doSequence(1);
+//  doSequence(0);
 
 }
+
+uint8_t getPresses(uint8_t presses, uint8_t min_press, uint8_t max_press, uint8_t max_loops) {
+  showNumber(presses);
+  if (!pressed()) {
+    return (presses);
+  }
+  else {
+    if (presses < max_press) {  // No overflow
+      getPresses(presses + 1, min_press, max_press, max_loops);
+    }
+    else {
+      if (max_loops<=0) {
+        // Heap overflow if we keep recursing.
+        return (min_press);
+      }
+      else {
+        // Start from min_touch and count up again
+        getPresses(presses, min_press, max_press, max_loops-1);
+      }
+    }
+  }
+}
+
+void showNumber(uint8_t presses) {
+  for (uint8_t i=1; i <= presses; i++)  {
+    delay(FLASH_INTERVAL_MILLIS/2);
+    digitalWrite(RED_PIN,   HIGH);
+    delay(FLASH_INTERVAL_MILLIS/2);
+    digitalWrite(RED_PIN,   LOW);
+    delay(FLASH_INTERVAL_MILLIS/2);
+  }
+  delay(FLASH_INTERVAL_MILLIS*2);
+}
+
 
 
 void doSequence(unsigned char s)  {
@@ -123,6 +167,11 @@ void doSequence(unsigned char s)  {
   digitalWrite(AMBER_PIN, LOW);
   digitalWrite(GREEN_PIN, LOW);
 }
+
+bool pressed() {
+   return !digitalRead(BUTTON_PIN);
+}
+
 
 void pinsToOutput()  {
   pinMode(RED_PIN,   OUTPUT);
