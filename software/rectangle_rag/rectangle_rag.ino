@@ -97,9 +97,9 @@ void doSequence(unsigned char s)  {
   uint8_t flash = 255; // Start with FLASH ON or HIGH
   //pgm_read_word_near ( &(bitrate_table[temp][row_num]) )
   
+  last_flash_milliseconds = millis();
   while(leds != END_SEQUENCE )  {
     start_milliseconds = millis();
-    last_flash_milliseconds = start_milliseconds;
     length_of_step = 1000 * pgm_read_word_near( &(sequence[s][current_step][1]));
     while((millis() - start_milliseconds) < (length_of_step) )  {
       digitalWrite(RED_PIN,   (leds & RED)   | (leds & RED_FLASH   & flash));
@@ -109,6 +109,12 @@ void doSequence(unsigned char s)  {
         last_flash_milliseconds = millis();
         flash = ~flash;
       }
+    }
+    //Restart Flash if finished a non-flashing step
+    if (leds < RED_FLASH)
+    {
+      flash = 255;
+      last_flash_milliseconds = millis();
     }
     current_step++;
     leds = pgm_read_word_near( &(sequence[s][current_step][0]));
