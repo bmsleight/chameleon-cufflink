@@ -8,8 +8,10 @@
 #define GREEN_PIN 4
 #define BUTTON_PIN 0
 #define MAX_LOOPS 7
+#define PRESS_INTERVAL 750
 
 // Hello PVG - a perversion of your look-up.
+#define ALL_OFF 0
 #define RED 1
 #define AMBER 2
 #define GREEN 4
@@ -19,15 +21,16 @@
 #define END_SEQUENCE 64
 
 #define FLASH_INTERVAL_MILLIS 375
+#define FLASH_ON 255
 
-#define SEQUENCE_TYPES 4
+#define SEQUENCE_TYPES 6
 #define MAX_STEPS 30
 // see http://www.arduino.cc/en/Reference/PROGMEM
 // https://github.com/lilspikey/arduino_sketches/blob/master/attiny/xmas/xmas.ino
 // bitrate = pgm_read_word_near ( &(bitrate_table[temp][row_num]) );
 // PROGMEM const uint16_t bitrate_table[15][6] = 
 
-const uint16_t sequence[SEQUENCE_TYPES][MAX_STEPS][2] PROGMEM =
+const uint8_t sequence[SEQUENCE_TYPES][MAX_STEPS][2] PROGMEM =
 {
   { // Normal Traffic RAG
     {RED, 3},
@@ -43,6 +46,30 @@ const uint16_t sequence[SEQUENCE_TYPES][MAX_STEPS][2] PROGMEM =
     {AMBER_FLASH, 3},
     {GREEN, 4},
     {AMBER, 3},
+    {RED, 3},
+    {END_SEQUENCE, 1},
+  },
+  { // Long Normal Traffic RAG
+    {RED, 3},
+    {RED + AMBER, 2},
+    {GREEN, 7},
+    {AMBER, 2},
+    {RED, 5},
+    {RED + AMBER, 2},
+    {GREEN, 8},
+    {AMBER, 2},
+    {RED, 3},
+    {RED + AMBER, 2},
+    {GREEN, 7},
+    {AMBER, 2},
+    {RED, 6},
+    {RED + AMBER, 2},
+    {GREEN, 9},
+    {AMBER, 2},
+    {RED, 8},
+    {RED + AMBER, 2},
+    {GREEN, 12},
+    {AMBER, 2},
     {RED, 3},
     {END_SEQUENCE, 1},
   },
@@ -63,14 +90,45 @@ const uint16_t sequence[SEQUENCE_TYPES][MAX_STEPS][2] PROGMEM =
     {AMBER + GREEN, 1},
     {AMBER, 2},
     {RED + AMBER, 1},
-    {RED, 2},
-    {RED + AMBER, 2},
-    {GREEN, 9},
+    {RED, 1},
+    {AMBER, 1},
+    {AMBER + GREEN, 1},
+    {GREEN, 1},
+    {AMBER + GREEN, 1},
     {AMBER, 2},
-    {RED, 3},
+    {RED + AMBER, 1},
+    {RED, 1},
+    {RED_FLASH , 1},
+    {RED_FLASH + AMBER_FLASH, 2},
+    {RED_FLASH + AMBER_FLASH + GREEN_FLASH, 3},
+    {AMBER_FLASH + GREEN_FLASH, 2},
+    {GREEN_FLASH, 1},
+    {AMBER_FLASH + GREEN_FLASH, 2},
+    {RED_FLASH + AMBER_FLASH + GREEN_FLASH, 3},
+    {RED_FLASH + AMBER_FLASH, 2},
+    {RED_FLASH , 1},
     {END_SEQUENCE, 1},
   },
-
+  { // Long Pelican 
+    {RED, 3},
+    {AMBER_FLASH, 3},
+    {GREEN, 4},
+    {AMBER, 3},
+    {RED, 3},
+    {AMBER_FLASH, 4},
+    {GREEN, 7},
+    {AMBER, 3},
+    {RED, 3},
+    {AMBER_FLASH, 5},
+    {GREEN, 8},
+    {AMBER, 3},
+    {RED, 3},
+    {AMBER_FLASH, 4},
+    {GREEN, 7},
+    {AMBER, 3},    
+    {RED, 3},    
+    {END_SEQUENCE, 1},
+  },
 };
 
 void setup() {                
@@ -84,71 +142,48 @@ void loop() {
 
   uint8_t presses = 0;
   if(pressed())  {
-    presses = getPresses(1, 1, 4, MAX_LOOPS);
+    presses = getPresses(1, 1, 5, MAX_LOOPS);
     doSequence(presses-1);
   }
 
 
-  
-//  doSequence(4);
-//  doSequence(3);
-//  doSequence(2);
-//  doSequence(1);
-//  doSequence(0);
-
 }
+
 
 uint8_t getPresses(uint8_t presses, uint8_t min_press, uint8_t max_press, uint8_t max_loops) {
-  showNumber(presses);
-  if (!pressed()) {
-    return (presses);
-  }
-  else {
-    if (presses < max_press) {  // No overflow
-      getPresses(presses + 1, min_press, max_press, max_loops);
+  uint8_t leds = pgm_read_byte_near( &(sequence[0][(presses-1)%4][0])); // Show Traffic Sequence 0 as pressed indicator 
+  writeLEDs(leds, FLASH_ON); // Actually FLASH_ON is not used here, but I need to send two variables.
+  delay(PRESS_INTERVAL);
+  while(pressed() )  {
+    presses++;
+    if (presses > max_press)  {
+        presses = min_press;
+        max_loops--;
     }
-    else {
-      if (max_loops<=0) {
-        // Heap overflow if we keep recursing.
-        return (min_press);
-      }
-      else {
-        // Start from min_touch and count up again
-        getPresses(presses, min_press, max_press, max_loops-1);
-      }
+    if (max_loops <= 0)  {
+      return (max_press);
     }
+    leds = pgm_read_byte_near( &(sequence[0][(presses-1)%4][0]));
+    writeLEDs(leds, FLASH_ON); // Actually FLASH_ON is not used here, but I need to send two variables.
+    delay(PRESS_INTERVAL);
   }
-}
-
-void showNumber(uint8_t presses) {
-  for (uint8_t i=1; i <= presses; i++)  {
-    delay(FLASH_INTERVAL_MILLIS/2);
-    digitalWrite(RED_PIN,   HIGH);
-    delay(FLASH_INTERVAL_MILLIS/2);
-    digitalWrite(RED_PIN,   LOW);
-    delay(FLASH_INTERVAL_MILLIS/2);
-  }
-  delay(FLASH_INTERVAL_MILLIS*2);
-}
+  return (presses);
+}  
 
 
 
-void doSequence(unsigned char s)  {
-  // http://playground.arduino.cc/Code/TimingRollover
+void doSequence(uint8_t s)  {
   uint8_t current_step = 0;
-  uint8_t leds = pgm_read_word_near( &(sequence[s][current_step][0]));
+  // Look up what the LED should be doing based upon the stored sequences
+  uint8_t leds = pgm_read_byte_near( &(sequence[s][current_step][0]));
   unsigned long start_milliseconds, length_of_step, last_flash_milliseconds;
-  uint8_t flash = 255; // Start with FLASH ON or HIGH
-  //pgm_read_word_near ( &(bitrate_table[temp][row_num]) )
-  
+  uint8_t flash = FLASH_ON; // Start with FLASH ON or HIGH
   last_flash_milliseconds = millis();
   while(leds != END_SEQUENCE )  {
     start_milliseconds = millis();
-    length_of_step = 1000 * pgm_read_word_near( &(sequence[s][current_step][1]));
+    length_of_step = 1000 * pgm_read_byte_near( &(sequence[s][current_step][1]));
     while((millis() - start_milliseconds) < (length_of_step) )  {
-      digitalWrite(RED_PIN,   (leds & RED)   | (leds & RED_FLASH   & flash));
-      digitalWrite(AMBER_PIN, (leds & AMBER) | (leds & AMBER_FLASH & flash));
-      digitalWrite(GREEN_PIN, (leds & GREEN) | (leds & GREEN_FLASH & flash));
+      writeLEDs(leds, flash);
       if ((millis() - last_flash_milliseconds) > FLASH_INTERVAL_MILLIS)  {
         last_flash_milliseconds = millis();
         flash = ~flash;
@@ -157,15 +192,19 @@ void doSequence(unsigned char s)  {
     //Restart Flash if finished a non-flashing step
     if (leds < RED_FLASH)
     {
-      flash = 255;
+      flash = FLASH_ON;
       last_flash_milliseconds = millis();
     }
     current_step++;
-    leds = pgm_read_word_near( &(sequence[s][current_step][0]));
+    leds = pgm_read_byte_near( &(sequence[s][current_step][0]));
   }
-  digitalWrite(RED_PIN,   LOW);
-  digitalWrite(AMBER_PIN, LOW);
-  digitalWrite(GREEN_PIN, LOW);
+  writeLEDs(ALL_OFF, ALL_OFF);
+}
+
+void writeLEDs(uint8_t leds, uint8_t flash) {
+  digitalWrite(RED_PIN,   (leds & RED)   | (leds & RED_FLASH   & flash));
+  digitalWrite(AMBER_PIN, (leds & AMBER) | (leds & AMBER_FLASH & flash));
+  digitalWrite(GREEN_PIN, (leds & GREEN) | (leds & GREEN_FLASH & flash));
 }
 
 bool pressed() {
