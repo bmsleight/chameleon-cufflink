@@ -1,7 +1,18 @@
 /* 
+
+ Used Watchdog Sleep Examples 
+ * KHM 2008 / Lab3/  Martin Nawrath nawrath@khm.de
+ * Kunsthochschule fuer Medien Koeln
+ * Academy of Media Arts Cologne
+ *
+ * Modified on 5 Feb 2011 by InsideGadgets (www.insidegadgets.com)
+ * to suit the ATtiny85 and removed the cbi( MCUCR,SE ) section 
+ 
 */
 
 #include <avr/pgmspace.h>
+#include <avr/sleep.h>
+#include <avr/wdt.h>
 
 #define RED_PIN 1
 #define AMBER_PIN 3
@@ -23,8 +34,9 @@
 #define FLASH_INTERVAL_MILLIS 375
 #define FLASH_ON 255
 
-#define SEQUENCE_TYPES 6
+#define SEQUENCE_TYPES 7
 #define MAX_STEPS 30
+#define TEST_PATTERN_FIRST_POWERED 6
 // see http://www.arduino.cc/en/Reference/PROGMEM
 // https://github.com/lilspikey/arduino_sketches/blob/master/attiny/xmas/xmas.ino
 // bitrate = pgm_read_word_near ( &(bitrate_table[temp][row_num]) );
@@ -129,23 +141,47 @@ const uint8_t sequence[SEQUENCE_TYPES][MAX_STEPS][2] PROGMEM =
     {RED, 3},    
     {END_SEQUENCE, 1},
   },
+  { // TEST_PATTERN_FIRST_POWERED
+    {GREEN, 1},
+    {AMBER, 1},
+    {RED, 1},
+    {RED_FLASH + AMBER_FLASH + GREEN_FLASH, 3},
+    {END_SEQUENCE, 1},
+  },
+
 };
+
+// Used by Sleep Function
+#ifndef cbi
+#define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
+#endif
+#ifndef sbi
+#define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
+#endif
+volatile boolean f_wdt = 1;
 
 void setup() {                
   // initialize the digital pin as an output.
   pinsToOutput();
   pinMode(BUTTON_PIN, INPUT_PULLUP);
+  doSequence(TEST_PATTERN_FIRST_POWERED);
+  setup_watchdog(8); // approximately 4 seconds sleep
+
 }
 
 
 void loop() {
-
   uint8_t presses = 0;
-  if(pressed())  {
-    presses = getPresses(1, 1, 5, MAX_LOOPS);
-    doSequence(presses-1);
+  if (f_wdt==1) {  // wait for timed out watchdog / flag is set when a watchdog timeout occurs
+    f_wdt=0;       // reset flag
+    if(pressed())  {
+      pinsToOutput();
+      presses = getPresses(1, 1, SEQUENCE_TYPES, MAX_LOOPS);
+      doSequence(presses-1);
+    }
+    powerDown();
+    system_sleep();
   }
-
 
 }
 
@@ -218,3 +254,52 @@ void pinsToOutput()  {
   pinMode(GREEN_PIN, OUTPUT);
 }
 
+void pinsToInput()  {
+  pinMode(RED_PIN,   INPUT);
+  pinMode(AMBER_PIN, INPUT);
+  pinMode(GREEN_PIN, INPUT);
+}
+
+void powerDown()  {
+  writeLEDs(ALL_OFF, ALL_OFF);
+  pinsToInput();
+}
+
+// set system into the sleep state 
+// system wakes up when wtchdog is timed out
+void system_sleep() {
+  cbi(ADCSRA,ADEN);                    // switch Analog to Digitalconverter OFF
+
+  set_sleep_mode(SLEEP_MODE_PWR_DOWN); // sleep mode is set here
+  sleep_enable();
+
+  sleep_mode();                        // System sleeps here
+
+  sleep_disable();                     // System continues execution here when watchdog timed out 
+  sbi(ADCSRA,ADEN);                    // switch Analog to Digitalconverter ON
+}
+
+// 0=16ms, 1=32ms,2=64ms,3=128ms,4=250ms,5=500ms
+// 6=1 sec,7=2 sec, 8=4 sec, 9= 8sec
+void setup_watchdog(int ii) {
+
+  byte bb;
+  int ww;
+  if (ii > 9 ) ii=9;
+  bb=ii & 7;
+  if (ii > 7) bb|= (1<<5);
+  bb|= (1<<WDCE);
+  ww=bb;
+
+  MCUSR &= ~(1<<WDRF);
+  // start timed sequence
+  WDTCR |= (1<<WDCE) | (1<<WDE);
+  // set new watchdog timeout value
+  WDTCR = bb;
+  WDTCR |= _BV(WDIE);
+}
+  
+// Watchdog Interrupt Service / is executed when watchdog timed out
+ISR(WDT_vect) {
+  f_wdt=1;  // set global flag
+}
